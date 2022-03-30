@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uol.compass.ong.enums.Porte;
 import uol.compass.ong.enums.Sexo;
 
 @Entity
@@ -32,7 +33,7 @@ public class Animal {
 	private Sexo sexo;
 	
 	@Enumerated(EnumType.STRING)
-	private String porte;
+	private Porte porte;
 	
 	private Integer idade;
 	private LocalDate tempo_no_abrigo;
