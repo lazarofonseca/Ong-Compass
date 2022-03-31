@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import uol.compass.ong.entities.Resgate;
 import uol.compass.ong.entities.Usuario;
 import uol.compass.ong.entities.dto.UsuarioDTO;
 import uol.compass.ong.repository.UsuarioRepository;
@@ -19,6 +20,8 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	Resgate resgate = new Resgate();
 	
 	@Transactional
 	public List<UsuarioDTO> findAll() {
