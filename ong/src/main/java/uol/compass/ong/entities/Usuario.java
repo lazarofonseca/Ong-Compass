@@ -12,6 +12,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uol.compass.ong.entities.dto.UsuarioDTO;
 
 @Entity
 @Data
@@ -35,5 +36,15 @@ public class Usuario {
 	@OneToOne
 	@JoinColumn(name = "id_endereco")
 	private Endereco endereco;
+	
+	public Usuario(UsuarioDTO usuarioDTO) {
+		this.cpf = usuarioDTO.getCpf();
+		this.email = usuarioDTO.getEmail();
+		this.id_Usuario = usuarioDTO.getId_usuario();
+		this.idade = usuarioDTO.getIdade();
+		this.nome = usuarioDTO.getNome();
+		this.telefone = usuarioDTO.getTelefone();
+		this.senha = usuarioDTO.getSenha();
+	}
 
 }

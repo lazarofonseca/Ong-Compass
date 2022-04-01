@@ -8,7 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import uol.compass.ong.entities.Resgate;
 import uol.compass.ong.entities.Usuario;
@@ -38,12 +38,16 @@ public class UsuarioService {
 
 	}
 
-	// FALTA INPLEMENTAR
 
-	public UsuarioDTO insert(@PathVariable UsuarioDTO usuarioDTO) {
-
-		return null;
-	}
+	public UsuarioDTO insert(@Valid UsuarioDTO usuarioDTO) {
+		Usuario usuario = new Usuario(usuarioDTO);
+		try {
+			usuarioRepository.save(usuario);
+			return new UsuarioDTO(usuario);
+		}catch(uol.compass.ong.exceptions.MethodArgumentNotValidException e) {
+			throw new uol.compass.ong.exceptions.MethodArgumentNotValidException(e.getMessage());
+		}
+	}		
 
 	public void delete(Long id) {
 		findById(id);
