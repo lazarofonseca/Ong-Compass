@@ -2,13 +2,9 @@ package uol.compass.ong.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-
 import javax.validation.Valid;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import uol.compass.ong.entities.Resgate;
 import uol.compass.ong.entities.Usuario;
 import uol.compass.ong.entities.dto.UsuarioDTO;
+import uol.compass.ong.exceptions.DefaultException;
 import uol.compass.ong.repository.UsuarioRepository;
 
 @Service
@@ -25,9 +22,7 @@ public class UsuarioService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
-	
 	Resgate resgate = new Resgate();
-	
 
 	@Transactional
 	public List<UsuarioDTO> findAll() {
@@ -35,25 +30,21 @@ public class UsuarioService {
 		return instanciaListaUsuarioDTO(list);
 	}
 
-	
 	@Transactional
 	public UsuarioDTO findById(Long id) {
-		Optional<Usuario> usuario = usuarioRepository.findById(id);
-		Usuario usuarioObj = usuario
-				.orElseThrow(() -> new EntityNotFoundException("Id " + id + " não encontrado."));
+		Usuario usuarioObj = usuarioRepository.findById(id).orElseThrow(
+				() -> new DefaultException("Usuario com id: " + id + " não encontrado.", "NOT_FOUND", 404));
 		return new UsuarioDTO(usuarioObj);
+
 	}
-	
-	//FALTA INPLEMENTAR
-	
+
+	// FALTA INPLEMENTAR
+
 	public UsuarioDTO insert(@PathVariable UsuarioDTO usuarioDTO) {
-		
+
 		return null;
 	}
-	
-	
-	
-	
+
 	public void delete(Long id) {
 		findById(id);
 		usuarioRepository.deleteById(id);
@@ -61,8 +52,8 @@ public class UsuarioService {
 	}
 
 	public UsuarioDTO update(Long id, @Valid Usuario usuario) {
-		Usuario newUsuario = usuarioRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Id " + id + " não encontrado."));
+		Usuario newUsuario = usuarioRepository.findById(id).orElseThrow(
+				() -> new DefaultException("Usuario com id: " + id + " não encontrado.", "NOT_FOUND", 404));
 		newUsuario.setNome(usuario.getNome());
 		newUsuario.setCpf(usuario.getCpf());
 		newUsuario.setEmail(usuario.getEmail());
@@ -73,7 +64,7 @@ public class UsuarioService {
 		return usuarioDTO;
 
 	}
-	
+
 	public static List<UsuarioDTO> instanciaListaUsuarioDTO(List<Usuario> list) {
 		List<UsuarioDTO> listDTO = new ArrayList<>();
 		for (Usuario usuario : list) {
@@ -85,13 +76,19 @@ public class UsuarioService {
 			dto.setIdade(usuario.getIdade());
 			dto.setTelefone(usuario.getTelefone());
 			dto.setSenha(usuario.getSenha());
-			
+
 			listDTO.add(dto);
 		}
-		
+
 		return listDTO;
 
 	}
 
+	public void deleteById(Long id) {
+		Usuario usuarioObj = usuarioRepository.findById(id).orElseThrow(
+				() -> new DefaultException("Usuario com id: " + id + " não encontrado.", "NOT_FOUND", 404));
+		usuarioRepository.delete(usuarioObj);
+
+	}
 
 }
