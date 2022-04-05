@@ -24,26 +24,30 @@ import uol.compass.ong.enums.Status;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Resgate {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_Resgate;
-	
-	@NotNull @NotEmpty
+
+	@NotNull
+	@NotEmpty
 	private String endereco;
-	
-	@NotNull @NotEmpty
+
+	@NotNull
+	@NotEmpty
 	private String caracteristicas_animal;
-	
+
 	private String descricao;
-	
-	@NotNull @NotEmpty
+
+	@NotNull
+	@NotEmpty
 	private String usuario;
-	
+
 	@Enumerated(EnumType.STRING)
 	private Status status;
 
 	public Resgate(ResgateDTO resgateDTO) {
+		this.id_Resgate = resgateDTO.getId_resgate();
 		this.endereco = resgateDTO.getEndereco();
 		this.caracteristicas_animal = resgateDTO.getCaracteristicas_animal();
 		this.descricao = resgateDTO.getDescricao();

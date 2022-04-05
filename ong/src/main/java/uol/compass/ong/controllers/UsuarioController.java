@@ -66,6 +66,7 @@ public class UsuarioController {
 		return ResponseEntity.noContent().build();
 	}
 
+
 	@ApiOperation("Atualizar")
 	@ApiResponses({
 	      @ApiResponse(code = 200, message = "Atualização realizada com sucesso",
