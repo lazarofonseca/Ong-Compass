@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import uol.compass.ong.entities.Resgate;
 import uol.compass.ong.entities.Usuario;
@@ -36,6 +37,7 @@ public class UsuarioService {
 		return new UsuarioDTO(usuarioObj);
 
 	}
+
 
 	public UsuarioDTO insert(@Valid UsuarioDTO usuarioDTO) {
 		Usuario usuario = new Usuario(usuarioDTO);
@@ -81,13 +83,16 @@ public class UsuarioService {
 
 			listDTO.add(dto);
 		}
+
 		return listDTO;
+
 	}
 
 	public void deleteById(Long id) {
 		Usuario usuarioObj = usuarioRepository.findById(id).orElseThrow(
 				() -> new DefaultException("Usuario com id: " + id + " não encontrado.", "NOT_FOUND", 404));
 		usuarioRepository.delete(usuarioObj);
+
 	}
 
 }
