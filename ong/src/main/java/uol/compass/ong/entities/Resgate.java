@@ -6,6 +6,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,9 +29,15 @@ public class Resgate {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id_Resgate;
 	
+	@NotNull @NotEmpty
 	private String endereco;
+	
+	@NotNull @NotEmpty
 	private String caracteristicas_animal;
+	
 	private String descricao;
+	
+	@NotNull @NotEmpty
 	private String usuario;
 	
 	@Enumerated(EnumType.STRING)

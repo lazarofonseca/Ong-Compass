@@ -16,10 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import uol.compass.ong.entities.Resgate;
 import uol.compass.ong.entities.dto.ResgateDTO;
+import uol.compass.ong.enums.Status;
+import uol.compass.ong.repository.ResgateRepository;
 import uol.compass.ong.services.ResgateService;
 
 @Repository
@@ -29,10 +32,13 @@ public class ResgateController {
 	@Autowired
 	ResgateService resgateService;
 	
+	@Autowired
+	private ResgateRepository resgateRepository;
+	
 	@GetMapping
-	public ResponseEntity<List<ResgateDTO>> findAll() {
-		List<ResgateDTO> listResgateDTO = resgateService.findAll();
-		return ResponseEntity.ok().body(listResgateDTO);
+	public ResponseEntity<List<Resgate>> findAll(@RequestParam (required = false) Status status) {
+		List<Resgate> listResgate = resgateRepository.filtro(status);
+		return ResponseEntity.ok().body(listResgate);
 	}
 
 	@GetMapping("/{id}")
