@@ -6,8 +6,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +22,7 @@ import uol.compass.ong.entities.dto.UsuarioDTO;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Usuario {
 
 	@Id
@@ -30,8 +33,14 @@ public class Usuario {
 	private String cpf;
 	private Integer idade;
 	private String telefone;
+	
+	@NotEmpty (message = "O Campo Email é obrigatório")
 	private String email;
+	
+	@NotEmpty (message = "O Campo Senha é obrigatório")
 	private String senha;
+	
+	private boolean admin;
 
 	@OneToOne
 	@JoinColumn(name = "id_endereco")
