@@ -2,6 +2,7 @@ package uol.compass.ong.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import uol.compass.ong.services.impl.UsuarioServiceImpl;
 
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -33,15 +35,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-        .csrf().disable()
-        .authorizeRequests()
-            .antMatchers("/animais/**").hasAnyRole("USER", "ADMIN")
-            .antMatchers("/enderecos/**").hasRole("ADMIN")
-            .antMatchers("/resgates/**").hasRole("ADMIN")
-            .antMatchers("/usuarios/**").hasRole("ADMIN")
-            .antMatchers(HttpMethod.POST, "/api/usuarios/**").permitAll()
-            .anyRequest().authenticated()
-        .and()
-            .httpBasic();
+	      .csrf().disable()
+	      .authorizeRequests()
+	      	.antMatchers(HttpMethod.POST, "/**").permitAll()
+	          .antMatchers("/animais/**").permitAll()
+	          .antMatchers("/swagger-ui/**").permitAll()
+	          .antMatchers("/enderecos/**").hasRole("ADMIN")
+	          .antMatchers("/resgates/**").hasRole("ADMIN")
+	          .antMatchers(HttpMethod.POST, "/usuarios/**").permitAll()
+//	      .antMatchers("/usuarios/**").hasRole("ADMIN")
+	          .anyRequest().authenticated()
+	      .and()
+	          .httpBasic();
 	}
 }

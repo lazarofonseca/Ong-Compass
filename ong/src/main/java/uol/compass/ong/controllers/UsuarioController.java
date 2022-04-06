@@ -41,7 +41,7 @@ public class UsuarioController {
 	private final UsuarioServiceImpl usuarioServiceImpl;
 	private final PasswordEncoder passwordEncoder;
 
-	@PostMapping
+	@PostMapping("/salvar")
     @ResponseStatus(HttpStatus.CREATED)
     public Usuario salvar(@RequestBody @Valid Usuario usuario) {
         String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
@@ -64,7 +64,7 @@ public class UsuarioController {
 	}
 	
 	@ApiOperation("Inserir")
-	@PostMapping
+	@PostMapping("/usuarios")
 	public ResponseEntity<UsuarioDTO> insert(@RequestBody @Valid UsuarioDTO inserirUsuario, UriComponentsBuilder uriComponentsBuilder){
 		URI uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(inserirUsuario.getId_usuario()).toUri();
 		return ResponseEntity.created(uri).body(usuarioService.insert(inserirUsuario));

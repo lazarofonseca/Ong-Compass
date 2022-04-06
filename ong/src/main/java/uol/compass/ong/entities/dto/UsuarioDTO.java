@@ -47,5 +47,4 @@ public class UsuarioDTO {
 		this.email = usuarioObj.getEmail();
 		this.senha = usuarioObj.getSenha();
 	}
-
 }
