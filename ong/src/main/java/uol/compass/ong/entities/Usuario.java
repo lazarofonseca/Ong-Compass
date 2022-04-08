@@ -13,6 +13,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ import uol.compass.ong.entities.dto.UsuarioDTO;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Usuario {
 
 	@Id
@@ -41,14 +43,29 @@ public class Usuario {
 	@NotNull
 	@NotEmpty
 	private String telefone;
-	@NotNull
-	@NotEmpty
-	private String email;
-	@NotNull
-	@NotEmpty
-	private String senha;
+
+	/*
+	 * @NotNull
+	 * 
+	 * @NotEmpty private String email;
+	 * 
+	 * @NotNull
+	 * 
+	 * @NotEmpty private String senha;
+	 */
+	
 	@OneToMany(mappedBy = "usuario")
 	private List<Adocao> adocoes;
+
+	
+	@NotEmpty (message = "O Campo Email é obrigatório")
+	private String email;
+	
+	@NotEmpty (message = "O Campo Senha é obrigatório")
+	private String senha;
+	
+	private boolean admin;
+
 
 	@OneToOne
 	@JoinColumn(name = "id_endereco")

@@ -6,7 +6,9 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,23 +17,38 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.RequiredArgsConstructor;
 import uol.compass.ong.entities.Usuario;
 import uol.compass.ong.entities.dto.UsuarioDTO;
 import uol.compass.ong.services.UsuarioService;
+import uol.compass.ong.services.impl.UsuarioServiceImpl;
 
 @RestController
 @RequestMapping("/usuarios")
+@RequiredArgsConstructor
 public class UsuarioController {
 
 	@Autowired
 	UsuarioService usuarioService;
+	
+	private final UsuarioServiceImpl usuarioServiceImpl;
+	private final PasswordEncoder passwordEncoder;
 
+	@PostMapping("/salvar")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Usuario salvar(@RequestBody @Valid Usuario usuario) {
+        String senhaCriptografada = passwordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaCriptografada);
+        return usuarioServiceImpl.salvar(usuario);
+    }
+	
 	@ApiOperation("Listar todos")
 	@GetMapping
 	public ResponseEntity<List<UsuarioDTO>> findAll() {
@@ -47,7 +64,7 @@ public class UsuarioController {
 	}
 	
 	@ApiOperation("Inserir")
-	@PostMapping
+	@PostMapping("/usuarios")
 	public ResponseEntity<UsuarioDTO> insert(@RequestBody @Valid UsuarioDTO inserirUsuario, UriComponentsBuilder uriComponentsBuilder){
 		URI uri = uriComponentsBuilder.path("/usuarios/{id}").buildAndExpand(inserirUsuario.getId_usuario()).toUri();
 		return ResponseEntity.created(uri).body(usuarioService.insert(inserirUsuario));
